@@ -1,0 +1,10 @@
+{
+  "environment": "DEV",
+  "paymentId": "fictional-review-payment",
+  "amount": 1000,
+  "currency": "KRW",
+  "confirmedAt": "2026-01-01T00:00:00Z",
+  "status": "COMPLETED",
+  "remainingAfter": 0,
+  "salt": "public-demo-salt-for-this-fictional-receipt-only"
+}
