@@ -17,8 +17,9 @@ def run():
     parser = argparse.ArgumentParser(description=__doc__)
     actions = parser.add_subparsers(dest="action", required=True)
     actions.add_parser("demo", help="Check the sample locally, without network access")
-    actions.add_parser("publish", help="Submit the fixed sample to GIWA Sepolia")
-    check = actions.add_parser("verify", help="Read an existing testnet transaction")
+    actions.add_parser("contract", help="Verify the sample against the deployed ReceiptRegistry")
+    actions.add_parser("publish", help="Legacy pilot: submit a self-addressed testnet transaction")
+    check = actions.add_parser("verify", help="Legacy pilot: verify a self-addressed testnet transaction")
     check.add_argument("transaction", help="Transaction hash from publish")
     check.add_argument("signer", help="Public address of the test wallet that published it")
     args = parser.parse_args()
@@ -38,6 +39,10 @@ def run():
 
     if int(receipt.rpc("eth_chainId"), 16) != receipt.CHAIN:
         raise ValueError("Expected GIWA Sepolia")
+    if args.action == "contract":
+        import registry
+        registry.check(sample)
+        return
     if args.action == "verify":
         if not re.fullmatch(r"0x[0-9a-fA-F]{64}", args.transaction):
             raise ValueError("Expected a transaction hash")
